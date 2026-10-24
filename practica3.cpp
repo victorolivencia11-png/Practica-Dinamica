@@ -64,7 +64,80 @@ std::vector<int> Sol(const std::vector<int>& V, int M) {
 }
 
 
+typedef int T;
+
+std::vector<int> Mochila(int P, const std::vector<int>& precio, const std::vector<int>& peso) {
+    int n = precio.size();
+    std::vector<int> Posiciones;
+
+    if (n != peso.size()) {
+        cout << "El vector de precios y de peso no tienen el mismo numero de elementos\n";
+        return Posiciones;
+    }
+    vector<vector<int>> Mat(P + 1, std::vector<int>(n + 1, 0));
+
+    for (int i = 1; i <= P; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (peso[j - 1] <= i) {
+                Mat[i][j] = max(precio[j - 1] + Mat[i - peso[j - 1]][j - 1], Mat[i][j - 1]);
+            } else {
+                Mat[i][j] = Mat[i][j - 1];
+            }
+        }
+    }
+
+    int i = P;
+    int j = n;
+
+    while (i > 0 && j > 0) {
+        if (peso[j - 1] <= i && Mat[i][j] == precio[j - 1] + Mat[i - peso[j - 1]][j - 1] && Mat[i][j] != Mat[i][j - 1]) {
+            Posiciones.push_back(j - 1);
+            i = i - peso[j - 1];
+            j--;
+        } else {
+            j--;
+        }
+    }
+
+    return Posiciones;
+}
+
         //visualizador hecho por IA
+
+void visualizar(int P, const std::vector<int>& precio, const std::vector<int>& peso, const std::vector<int>& seleccionados) {
+    std::cout << "========================================\n";
+    std::cout << "         RESUMEN DE LA MOCHILA          \n";
+    std::cout << "========================================\n";
+    std::cout << "Capacidad maxima: " << P << "\n\n";
+
+    std::cout << "Elementos disponibles:\n";
+    for (size_t k = 0; k < precio.size(); ++k) {
+        std::cout << "  [Idx " << k << "] -> Peso: " << peso[k] << " | Precio: " << precio[k] << "\n";
+    }
+
+    std::cout << "\n----------------------------------------\n";
+    std::cout << "Elementos seleccionados:\n";
+
+    int pesoTotal = 0;
+    int valorTotal = 0;
+
+    if (seleccionados.empty()) {
+        std::cout << "  (Ningun elemento seleccionado)\n";
+    } else {
+        for (int idx : seleccionados) {
+            std::cout << "  -> Objeto " << idx 
+                      << " (Peso: " << peso[idx] 
+                      << ", Precio: " << precio[idx] << ")\n";
+            pesoTotal += peso[idx];
+            valorTotal += precio[idx];
+        }
+    }
+
+    std::cout << "\n----------------------------------------\n";
+    std::cout << "Peso total utilizado: " << pesoTotal << " / " << P << "\n";
+    std::cout << "Valor total obtenido: " << valorTotal << "\n";
+    std::cout << "========================================\n";
+}
 
 
 void probarCaso(int id, const std::vector<int>& V, int M) {                 
@@ -104,6 +177,13 @@ int main() {
 
 
     probarCaso(3, {1, 2, 5, 10, 20}, 43);
+
+
+int capacidad = 8;
+    std::vector<int> precios = {10, 15, 40, 50};
+    std::vector<int> pesos   = {1,  2,  3,  5};
+    visualizar(capacidad, precios, pesos, Mochila(capacidad, precios, pesos));
+
 
     return 0;
 }
