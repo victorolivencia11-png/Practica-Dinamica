@@ -102,87 +102,73 @@ std::vector<int> Mochila(int P, const std::vector<int>& precio, const std::vecto
     return Posiciones;
 }
 
-        //visualizador hecho por IA
-
-void visualizar(int P, const std::vector<int>& precio, const std::vector<int>& peso, const std::vector<int>& seleccionados) {
-    std::cout << "========================================\n";
-    std::cout << "         RESUMEN DE LA MOCHILA          \n";
-    std::cout << "========================================\n";
-    std::cout << "Capacidad maxima: " << P << "\n\n";
-
-    std::cout << "Elementos disponibles:\n";
-    for (size_t k = 0; k < precio.size(); ++k) {
-        std::cout << "  [Idx " << k << "] -> Peso: " << peso[k] << " | Precio: " << precio[k] << "\n";
+void visualizarMochila(int P, const std::vector<int>& precio, const std::vector<int>& peso, const std::vector<int>& seleccionados) {
+    cout << "RESUMEN DE LA MOCHILA\n";
+    cout << "Peso maximo: " << P << "\n\n";
+    cout << "Elementos disponibles:\n";
+    for (int i = 0; i < precio.size(); i++) {
+        cout << "  Objeto " << i << " -> Peso: " << peso[i] << "   Precio: " << precio[i] << "\n";
     }
-
-    std::cout << "\n----------------------------------------\n";
-    std::cout << "Elementos seleccionados:\n";
-
+    cout << "\n\n";
+    cout << "Elementos seleccionados:\n";
     int pesoTotal = 0;
     int valorTotal = 0;
-
     if (seleccionados.empty()) {
-        std::cout << "  (Ningun elemento seleccionado)\n";
+        cout << "  (Ningun elemento seleccionado)\n";
     } else {
-        for (int idx : seleccionados) {
-            std::cout << "  -> Objeto " << idx 
-                      << " (Peso: " << peso[idx] 
-                      << ", Precio: " << precio[idx] << ")\n";
-            pesoTotal += peso[idx];
-            valorTotal += precio[idx];
+        for (int i = 0; i < seleccionados.size(); i++) {
+            cout << "  -> Objeto " << seleccionados[i] << " (Peso: " << peso[seleccionados[i]] << ", Precio: " << precio[seleccionados[i]] << ")\n";
+            pesoTotal += peso[seleccionados[i]];
+            valorTotal += precio[seleccionados[i]];
         }
     }
-
-    std::cout << "\n----------------------------------------\n";
-    std::cout << "Peso total utilizado: " << pesoTotal << " / " << P << "\n";
-    std::cout << "Valor total obtenido: " << valorTotal << "\n";
-    std::cout << "========================================\n";
+    cout << "\n";
+    cout << "Peso total utilizado: " << pesoTotal << " / " << P << "\n";
+    cout << "Valor total obtenido: " << valorTotal << "\n";
+    cout << "\n";
 }
 
 
-void probarCaso(int id, const std::vector<int>& V, int M) {                 
-    cout << "========================================\n";
-    cout << "CASO DE PRUEBA #" << id << "\n";
-    cout << "========================================\n";
+void probarMonedas(int num, const std::vector<int>& V, int M) {                 
+    cout << "\n";
+    cout << "CASO DE PRUEBA " << num << "\n";
+    cout << "\n";
     cout << "Monedas disponibles: { ";
-    for (size_t k = 0; k < V.size(); ++k) {
-        cout << V[k] << (k + 1 < V.size() ? ", " : " ");
+    for (int i = 0; i < V.size(); ++i) {
+        cout << "  " << V[i] << "  ";
+  
     }
-    cout << "}\nMonto a alcanzar   : " << M << "\n\n";
+    cout << "}\nDinero a alcanzar   : " << M << "\n\n";
 
     T min_monedas = monedas(V, M);
 
     if (min_monedas != inf) {
         vector<int> frecuencias = Sol(V, M);
 
-        cout << "✓ Num. minimo de monedas: " << min_monedas << "\n";
-        cout << "✓ Desglose por moneda   :\n";
-        for (size_t k = 0; k < V.size(); ++k) {
-            if (frecuencias[k] > 0) {
-                cout << "   - Monedas de " << V[k] << ": " << frecuencias[k] << "\n";
+        cout << " Num minimo de monedas: " << min_monedas << "\n";
+        cout << " Desglose por moneda:\n";
+        for (int i = 0; i < V.size(); ++i) {
+            if (frecuencias[i] > 0) {
+                cout << "   Monedas de " << V[i] << ": " << frecuencias[i] << "\n";
             }
         }
     } else {
-        cout << "✗ Resultado: IMPOSIBLE dar el cambio exacto con las monedas disponibles.\n";
+        cout << "Imposible dar el cambio exacto\n";
     }
     cout << "\n";
 }
 
 int main() {
 
-    probarCaso(1, {1, 3, 4}, 6);
-
-
-    probarCaso(2, {3, 5}, 7);
-
-
-    probarCaso(3, {1, 2, 5, 10, 20}, 43);
+    probarMonedas(1, {1, 3, 4}, 6);
+    probarMonedas(2, {3, 5}, 7);
+    probarMonedas(3, {1, 2, 5, 10, 20}, 38);
 
 
 int capacidad = 8;
     std::vector<int> precios = {10, 15, 40, 50};
     std::vector<int> pesos   = {1,  2,  3,  5};
-    visualizar(capacidad, precios, pesos, Mochila(capacidad, precios, pesos));
+    visualizarMochila(capacidad, precios, pesos, Mochila(capacidad, precios, pesos));
 
 
     return 0;
