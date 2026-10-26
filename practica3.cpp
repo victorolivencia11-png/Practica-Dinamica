@@ -122,23 +122,18 @@ void visualizarMochila(int P, const std::vector<int>& precio, const std::vector<
             valorTotal += precio[seleccionados[i]];
         }
     }
-    cout << "\n";
-    cout << "Peso total utilizado: " << pesoTotal << " / " << P << "\n";
-    cout << "Valor total obtenido: " << valorTotal << "\n";
-    cout << "\n";
+    cout << "\nValor total: " << valorTotal << "\n\n";
 }
 
 
 void probarMonedas(int num, const std::vector<int>& V, int M) {                 
-    cout << "\n";
-    cout << "CASO DE PRUEBA " << num << "\n";
-    cout << "\n";
+    cout << "\nCASO DE PRUEBA " << num << "\n\n";
     cout << "Monedas disponibles: { ";
     for (int i = 0; i < V.size(); ++i) {
         cout << "  " << V[i] << "  ";
   
     }
-    cout << "}\nDinero a alcanzar   : " << M << "\n\n";
+    cout << "}\nDinero a alcanzar: " << M << "\n\n";
 
     T min_monedas = monedas(V, M);
 
@@ -146,7 +141,7 @@ void probarMonedas(int num, const std::vector<int>& V, int M) {
         vector<int> frecuencias = Sol(V, M);
 
         cout << " Num minimo de monedas: " << min_monedas << "\n";
-        cout << " Desglose por moneda:\n";
+        cout << " Contador monedas:\n";
         for (int i = 0; i < V.size(); ++i) {
             if (frecuencias[i] > 0) {
                 cout << "   Monedas de " << V[i] << ": " << frecuencias[i] << "\n";
